@@ -33,23 +33,23 @@ class Artist(Resource):
     radio: bool
     tracklist: str
 
-    def get_top(self, **kwargs) -> PaginatedList[Track]:
+    def get_top(self, full=True, **kwargs) -> PaginatedList[Track]:
         """
         Get the top tracks of an artist.
 
         :returns: a :class:`PaginatedList <deezer.PaginatedList>`
                   of :class:`Track <deezer.Track>` instances.
         """
-        return self.get_paginated_list("top", **kwargs)
+        return self.get_paginated_list("top", **kwargs) if full else  self.get_relation("top", fwd_parent=False, **kwargs)
 
-    def get_related(self, **kwargs) -> PaginatedList[Artist]:
+    def get_related(self, full=True, **kwargs) -> PaginatedList[Artist]:
         """
         Get a list of related artists.
 
         :returns: a :class:`PaginatedList <deezer.PaginatedList>`
                   of :class:`Artist <deezer.Artist>` instances
         """
-        return self.get_paginated_list("related", **kwargs)
+        return self.get_paginated_list("related", **kwargs) if full else  self.get_relation("related", fwd_parent=False, **kwargs)
 
     def get_radio(self, **kwargs) -> list[Track]:
         """
@@ -60,20 +60,20 @@ class Artist(Resource):
         # radio returns tracks from different artists -> no fwd parent
         return self.get_relation("radio", fwd_parent=False, **kwargs)
 
-    def get_albums(self, **kwargs) -> PaginatedList[Album]:
+    def get_albums(self, full=True, **kwargs) -> PaginatedList[Album]:
         """
         Get a list of artist's albums.
 
         :returns: a :class:`PaginatedList <deezer.PaginatedList>`
                   of :class:`Album <deezer.Album>` instances
         """
-        return self.get_paginated_list("albums", **kwargs)
+        return self.get_paginated_list("albums", **kwargs) if full else  self.get_relation("albums", fwd_parent=False, **kwargs)
 
-    def get_playlists(self, **kwargs) -> PaginatedList[Playlist]:
+    def get_playlists(self, full=True, **kwargs) -> PaginatedList[Playlist]:
         """
         Get a list of artist's playlists.
 
         :returns: a :class:`PaginatedList <deezer.PaginatedList>`
                   of :class:`Playlist <deezer.Playlist>` instances
         """
-        return self.get_paginated_list("playlists", **kwargs)
+        return self.get_paginated_list("playlists", **kwargs) if full else  self.get_relation("playlists", fwd_parent=False, **kwargs)
